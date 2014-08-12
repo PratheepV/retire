@@ -140,7 +140,7 @@ module Tire
         #
         # It will also execute any `<after|before>_update_elasticsearch_index` callback hooks.
         #
-        def update_index
+        def update_index_es
           instance.run_callbacks :update_elasticsearch_index do
             if instance.destroyed?
               index.remove instance
@@ -151,8 +151,8 @@ module Tire
             end
           end
         end
-        alias :update_elasticsearch_index  :update_index
-        alias :update_elastic_search_index :update_index
+        alias :update_elasticsearch_index  :update_index_es
+        alias :update_elastic_search_index :update_index_es
 
         # The default JSON serialization of the model, based on its `#to_hash` representation.
         #

@@ -244,7 +244,7 @@ module Tire
         params               = params.reject { |name,value| !value }
         params_encoded       = params.empty? ? '' : "?#{params.to_param}"
 
-        @response = Configuration.client.post("#{url}/_bulk#{params_encoded}", payload.join("\n"))
+        @response = Configuration.client.post("#{url}/_bulk#{params_encoded}", payload.join("\n"),-1)
         raise RuntimeError, "#{@response.code} > #{@response.body}" if @response && @response.failure?
         @response
       rescue StandardError => error
@@ -284,7 +284,7 @@ module Tire
     def import(klass_or_collection, options={})
       case
         when method = options.delete(:method)
-          options = {:page => 1, :per_page => 1000}.merge options
+          options = {:page => 1, :per_page => 500}.merge options
           while (documents = klass_or_collection.send(method.to_sym, options.merge(:page => options[:page]))) \
                             && documents.to_a.length > 0
 

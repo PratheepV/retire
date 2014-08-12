@@ -154,7 +154,13 @@ module Tire
       end
 
       def __find_records_by_ids(klass, ids)
-        @options[:load] === true ? klass.find(ids) : klass.find(ids, @options[:load])
+        if defined?(ActiveRecord::Base) && klass < ActiveRecord::Base
+          if @options[:load].is_a?(Hash)
+            @options[:load].key?(klass) ? klass.find_all_by_id(ids, @options[:load][klass]) : klass.find_all_by_id(ids, @options[:load])
+          else
+            klass.find_all_by_id(ids)
+          end
+        end
       end
     end
 
